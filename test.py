@@ -1,1 +1,1 @@
-print('fuck github')
+print('I f**king love github')
