@@ -1,2 +1,5 @@
 Data/*.csv
 Data/*.log
+.idea/
+**/.ipynb_checkpoints/
+**/.DS_Store
