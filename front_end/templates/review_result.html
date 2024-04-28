@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Property Details</title>
+    <style>
+        body { 
+            text-align: center; 
+            padding-top: 5%; 
+        }
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid black;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: left;
+        }
+        .button-container {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    {% if property %}
+        <h2>Property Details</h2>
+        <div>{{ property|safe }}</div>
+        <div class="button-container">
+            <a href="/"><button>Return to Home</button></a>
+        </div>
+    {% elif error %}
+        <p>{{ error }}</p>
+        <div class="button-container">
+            <a href="/"><button>Return to Home</button></a>
+        </div>
+    {% endif %}
+</body>
+</html>

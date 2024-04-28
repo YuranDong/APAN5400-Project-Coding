@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Neighborhood Details</title>
+</head>
+<body>
+    <h1>Select a Neighborhood</h1>
+    <form action="/neighborhood" method="post">
+        <select name="neighborhood">
+            {% for neighborhood in neighborhoods %}
+                <option value="{{ neighborhood }}" {% if selected_neighborhood == neighborhood %}selected{% endif %}>{{ neighborhood }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Get Details</button>
+    </form>
+
+    {% if details %}
+        <h2>Details for {{ selected_neighborhood }}</h2>
+        <p><strong>Detail:</strong> {{ details|safe}}</p>
+    {% endif %}
+
+    {% if plots %}
+        <h2>Plots for {{ selected_neighborhood }}</h2>
+        {% for plot in plots %}
+            <img src="{{ plot }}">
+        {% endfor %}
+    {% endif %}
+    <a href="/"><button>Return to Welcome</button></a>
+</body>
+</html>
