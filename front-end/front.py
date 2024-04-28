@@ -15,6 +15,9 @@ app = Flask(__name__)
 @app.route('/')
 # general welcome webpage with three buttons that are accessible for additional webpages
 def welcome():
+    global engine
+    engine = connect_to_postgresql()
+    # connect_to_mongodb()
     return render_template('welcome.html')
 
 # navigation to property webpage
@@ -22,7 +25,7 @@ def welcome():
 def property():
     if request.method == "POST":
         property_id = int(request.form['property_id'])
-        property_data = query_property_id(property_id)
+        property_data = query_property_id(property_id,engine=engine)
         
         review_word = request.form['review_word']
         review_data = query_property_word(review_word)

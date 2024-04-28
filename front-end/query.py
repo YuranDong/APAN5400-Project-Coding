@@ -6,19 +6,50 @@ import matplotlib.pyplot as plt
 import io
 import base64
 import urllib.parse
+from sqlalchemy import create_engine
 
-def query_property_id(property_id):
-    ########################################################################################
-    # input: property_id (integer)
-    # output: dataframe
-    # usage: query for property features through property_id
-    db = [
-        pd.DataFrame({'name': 'Cozy Cottage', 'location': '123 Maple Street', 'price': '250,000 USD'}, index=[0]),
-        pd.DataFrame({'name': 'Urban Flat', 'location': '456 City Ave', 'price': '350,000 USD'}, index=[0]),
-        pd.DataFrame({'name': 'Beach House', 'location': '789 Ocean Blvd', 'price': '750,000 USD'}, index=[0])
-    ]
-    # keep in mind that return a null value if property id not found
-    return db[property_id-1]
+def connect_to_postgresql():
+    # Replace these values with your database connection details
+    username = 'postgres'
+    password = '123'
+    host = 'localhost'
+    port = '5432'
+    dbname = 'airbnb'
+
+    # Create the connection string
+    connection_string = f"postgresql://{username}:{password}@{host}:{port}/{dbname}"
+
+    # Create the database engine
+    engine = create_engine(connection_string)
+
+    return engine
+
+def query_property_id(property_id,engine):
+    '''
+    query for property features through property_id
+    :param property_id: integer
+    :param engine: Postresql query engine
+    :return: pandas dataframe
+    '''
+    # Define SQL query
+    sql_query = f'''
+    select
+        name
+        ,neighbourhood_cleansed
+        ,room_type
+    from properties
+    where id = {property_id}
+    '''
+    # Load data into a DataFrame
+    dataframe = pd.read_sql(sql_query, engine)
+    return dataframe
+    # db = [
+    #     pd.DataFrame({'name': 'Cozy Cottage', 'location': '123 Maple Street', 'price': '250,000 USD'}, index=[0]),
+    #     pd.DataFrame({'name': 'Urban Flat', 'location': '456 City Ave', 'price': '350,000 USD'}, index=[0]),
+    #     pd.DataFrame({'name': 'Beach House', 'location': '789 Ocean Blvd', 'price': '750,000 USD'}, index=[0])
+    # ]
+    # # keep in mind that return a null value if property id not found
+    # return db[property_id-1]
 
 def query_property_word(review_word):
     ########################################################################################
