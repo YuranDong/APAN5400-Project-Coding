@@ -28,11 +28,15 @@
     {% if property %}
         <h2>Property Details</h2>
         <div>{{ property|safe }}</div>
+    {% elif error %}
+        <p>{{ error }}</p>
         <div class="button-container">
             <a href="/"><button>Return to Home</button></a>
         </div>
-    {% elif error %}
-        <p>{{ error }}</p>
+    {% endif %}
+    {% if host %}
+        <h2>Host Details</h2>
+        <div>{{ host|safe }}</div>
         <div class="button-container">
             <a href="/"><button>Return to Home</button></a>
         </div>

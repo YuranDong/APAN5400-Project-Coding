@@ -22,8 +22,9 @@ def property():
             review_data = query_property_word(property_id, review_word, collection=collection)
             return render_template('review_result.html', property=review_data.to_html(index=False))
         else:
-            property_data = query_property_id(property_id, engine=engine)
-            return render_template('property_result.html', property=property_data.to_html(index=False))
+            property_data, host_data = query_property_id(property_id, engine=engine)
+            return render_template('property_result.html', property=property_data.to_html(index=False),
+                                   host=host_data.to_html(index=False))
     return render_template('property.html')
 
 

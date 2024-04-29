@@ -82,6 +82,8 @@ def query_property_id(property_id, engine):
         ,review_scores_communication
         ,review_scores_location
         ,review_scores_value
+        -- host id
+        ,host_id
     from properties
     where id = {property_id}
     '''
@@ -91,13 +93,42 @@ def query_property_id(property_id, engine):
     # if property id does not exist
     if dataframe.empty:
         output = pd.DataFrame({'property_id': ['No Data Found']})
-        return output
+        output2 = pd.DataFrame({'host_id': ['No Data Found']})
+        return output, output2
     else:
         # adjust dataframe
+        host_id = dataframe.loc[0, 'host_id']
+        dataframe.drop('host_id', axis=1, inplace=True)
         output = dataframe.T
         output.reset_index(inplace=True)
         output.columns = ['features', 'values']
-        return output
+
+        # query for host info
+        # Define SQL query
+        sql_query_host = f'''
+            select 
+                host_name, 
+                host_since, 
+                host_location , 
+                host_response_time , 
+                host_response_rate , 
+                host_acceptance_rate,
+                host_is_superhost ,
+                host_neighbourhood, 
+                host_total_listings_count
+            from hosts
+            where host_id = {host_id}
+            '''
+        dataframe2 = pd.read_sql(sql_query_host, engine)
+        if dataframe2.empty:
+            output2 = pd.DataFrame({'host_id': ['No Data Found']})
+            return output, output2
+        else:
+            # adjust dataframe
+            output2 = dataframe2.T
+            output2.reset_index(inplace=True)
+            output2.columns = ['features', 'values']
+        return output, output2
 
 
 def query_property_word(property_id, review_word, collection):
